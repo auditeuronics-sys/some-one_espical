@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ffcce0">
+<title>💕 Just For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #ffe4f0 0%, #ffd6e7 25%, #ffcce0 50%, #ffe0f0 75%, #fff0f8 100%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    touch-action: manipulation;
+  }
+
+  .hearts-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+
+  .floating-heart {
+    position: absolute;
+    animation: floatUp linear infinite;
+    opacity: 0.13;
+    user-select: none;
+  }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0.13; }
+    100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+  }
+
+  .card {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 28px;
+    padding: 1.6rem 1.4rem 1.6rem;
+    max-width: 460px;
+    width: 92vw;
+    text-align: center;
+    box-shadow: 0 8px 48px rgba(255,100,160,0.18), 0 2px 16px rgba(255,150,180,0.12);
+    border: 1.5px solid rgba(255,150,200,0.3);
+    position: relative;
+    z-index: 10;
+    animation: cardPop 0.45s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  @keyframes cardPop {
+    0%   { transform: scale(0.82); opacity: 0; }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+
+  .paris-strip {
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #002395, #EDEDED, #ED2939);
+    border-radius: 28px 28px 0 0;
+    opacity: 0.75;
+  }
+
+  .deep-strip {
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #c0386b, #8b1a4a, #c0386b);
+    border-radius: 28px 28px 0 0;
+    opacity: 0.85;
+  }
+
+  .progress-bar-wrap {
+    background: #ffd6e8; border-radius: 99px; height: 6px;
+    margin-bottom: 0.9rem; overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #ff6fa8, #e8407a);
+    height: 100%; border-radius: 99px;
+    transition: width 0.55s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .cute-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffe0ee, #ffd0e4);
+    color: #e06090; font-size: 11px; padding: 3px 12px;
+    border-radius: 99px; font-weight: 700; letter-spacing: 1px;
+    margin-bottom: 0.5rem; border: 1px solid #ffb8d4;
+  }
+
+  .gif-area {
+    width: 100%; height: 140px;
+    border-radius: 18px; overflow: hidden;
+    margin-bottom: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #ffe4f0, #ffd0e8);
+    position: relative;
+  }
+  .gif-emoji {
+    font-size: 4rem;
+    animation: bounce 1.3s ease-in-out infinite alternate;
+    line-height: 1;
+  }
+  .gif-sub {
+    position: absolute; bottom: 8px; right: 12px;
+    font-size: 1.6rem;
+    animation: bounce 1.6s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes bounce {
+    0%   { transform: scale(1)    translateY(0); }
+    100% { transform: scale(1.12) translateY(-9px); }
+  }
+
+  .question-num {
+    font-size: 11px; color: #e075aa; letter-spacing: 2px;
+    text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;
+  }
+
+  .question-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.18rem, 4.2vw, 1.5rem);
+    color: #c0386b; line-height: 1.5;
+    margin-bottom: 1.5rem;
+    min-height: 80px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 0.3rem;
+  }
+
+  .buttons {
+    display: flex; gap: 0.9rem;
+    justify-content: center; align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #ff6fa8, #e8407a);
+    color: white; border: none; border-radius: 50px;
+    padding: 0.78rem 2.4rem;
+    font-size: clamp(1rem, 4vw, 1.1rem);
+    font-weight: 700; font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(232,64,122,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+    min-width: 120px;
+    -webkit-appearance: none;
+  }
+  .btn-yes:active { transform: scale(0.95); }
+
+  .btn-no {
+    background: white; color: #e0609a;
+    border: 2px solid #f0a0c0; border-radius: 50px;
+    padding: 0.78rem 1.9rem;
+    font-size: clamp(0.9rem, 3.5vw, 1.02rem);
+    font-weight: 700; font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    position: fixed; z-index: 9999; white-space: nowrap;
+    transition: font-size 0.2s;
+    -webkit-appearance: none;
+    box-shadow: 0 2px 12px rgba(255,100,160,0.15);
+  }
+
+  .sparkle {
+    position: fixed; pointer-events: none;
+    font-size: 1.3rem; z-index: 9998;
+    animation: sparkleAnim 0.85s ease forwards;
+    user-select: none;
+  }
+  @keyframes sparkleAnim {
+    0%   { transform: scale(0)   rotate(0deg);   opacity: 1; }
+    60%  { transform: scale(1.5) rotate(180deg); opacity: 1; }
+    100% { transform: scale(0)   rotate(360deg) translateY(-50px); opacity: 0; }
+  }
+
+  .ending-card { text-align: center; }
+  .ending-emoji {
+    font-size: 4.5rem; display: block; margin-bottom: 0.8rem;
+    animation: heartbeat 1.2s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    30%      { transform: scale(1.2); }
+    60%      { transform: scale(1.06); }
+  }
+  .ending-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    color: #c0386b; margin-bottom: 0.7rem;
+  }
+  .ending-msg {
+    color: #d05085;
+    font-size: clamp(0.88rem, 3.2vw, 0.97rem);
+    line-height: 1.8; margin-bottom: 1.4rem;
+    padding: 0 0.3rem;
+  }
+  .restart-btn {
+    background: linear-gradient(135deg, #ff6fa8, #e8407a);
+    color: white; border: none; border-radius: 50px;
+    padding: 0.7rem 2rem; font-size: 0.95rem; font-weight: 700;
+    font-family: 'Nunito', sans-serif; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(232,64,122,0.3);
+    -webkit-appearance: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<div class="card" id="mainCard">
+  <div class="paris-strip" id="parisStrip" style="display:none"></div>
+  <div class="deep-strip"  id="deepStrip"  style="display:none"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+  </div>
+  <div class="cute-tag" id="cuteTag">💕 Just for you</div>
+  <div class="gif-area">
+    <span class="gif-emoji" id="gifEmoji">💐</span>
+    <span class="gif-sub"   id="gifSub"></span>
+  </div>
+  <div class="question-num"  id="questionNum">QUESTION 1 OF 16</div>
+  <div class="question-text" id="questionText">Loading...</div>
+  <div class="buttons">
+    <button class="btn-yes" onclick="handleYes()">Yes 💖</button>
+    <button class="btn-no"  id="noBtn" onclick="runAway()">No 🙈</button>
+  </div>
+</div>
+
+<script>
+  var questions = [
+    { text:"Do you think I'm the cutest person you've ever met? 🥺✨",                                                                           emoji:"🌸", sub:"✨", tag:"💕 Sweet question",      paris:false, deep:false },
+    { text:"Would you choose me over pizza? 🍕💘",                                                                                               emoji:"😍", sub:"🍕", tag:"🍕 Tough one!",           paris:false, deep:false },
+    { text:"Do you get butterflies when I text you? 🦋💌",                                                                                        emoji:"🦋", sub:"💌", tag:"💌 Feeling it?",          paris:false, deep:false },
+    { text:"Would you snuggle with me all day on a rainy day? ☔🫂",                                                                              emoji:"🌧️",sub:"🫂", tag:"☁️ Cozy vibes",          paris:false, deep:false },
+    { text:"Do you smile at your phone when I message you? 😏📱",                                                                                 emoji:"📱", sub:"😊", tag:"😊 Be honest!",           paris:false, deep:false },
+    { text:"Wanna escape to Paris with me for a little bit, my love? 🗼💑",                                                                       emoji:"🗼", sub:"🥂", tag:"🇫🇷 Paris awaits",       paris:true,  deep:false },
+    { text:"Can I lose myself in your embrace? 🤍🌊",                                                                                             emoji:"🫂", sub:"💫", tag:"🌊 Deep question",        paris:false, deep:false },
+    { text:"Can we stop talking and just let our bodies speak the language of love? 🌹🔥",                                                        emoji:"🌹", sub:"🔥", tag:"🔥 No words needed",     paris:false, deep:true  },
+    { text:"Would you let me get close enough to feel your heartbeat? 💓🫀",                                                                      emoji:"💓", sub:"🌙", tag:"💓 So close...",          paris:false, deep:false },
+    { text:"I don't just want closeness — I want that deep, breathless connection that only happens when it's with you. Can we get lost in each other? 💋🌌", emoji:"🌌", sub:"💋", tag:"💌 Only with you", paris:false, deep:true  },
+    { text:"Can we leave the world behind and just belong to each other? 🌍💞",                                                                   emoji:"🌍", sub:"💞", tag:"🌌 Just us two",          paris:false, deep:false },
+    { text:"No space between us... what do you say? 🌹🔥",                                                                                       emoji:"🫦", sub:"🌹", tag:"✨ No distance",           paris:false, deep:false },
+    { text:"Would you kiss me right now if I was next to you? 💋😘",                                                                             emoji:"💋", sub:"🌸", tag:"🔥 Spicy one!",           paris:false, deep:false },
+    { text:"Would you let me steal all the blanket? 🛏️🧸",                                                                                       emoji:"🛏️",sub:"🧸", tag:"😈 Naughty question",    paris:false, deep:false },
+    { text:"If I asked you to be mine forever, would you say yes? 💍🥰",                                                                         emoji:"💍", sub:"🌟", tag:"💍 Big question!",        paris:false, deep:false },
+    { text:"Do you love me? 💗🌈",                                                                                                                emoji:"💗", sub:"🌈", tag:"❤️ The biggest one",      paris:false, deep:false }
+  ];
+
+  var current     = 0;
+  var noMoveCount = 0;
+  var isMoving    = false;
+  var noBtn       = document.getElementById('noBtn');
+
+  function showQuestion(i) {
+    var q = questions[i];
+    document.getElementById('gifEmoji').textContent     = q.emoji;
+    document.getElementById('gifSub').textContent       = q.sub || '';
+    document.getElementById('questionText').textContent = q.text;
+    document.getElementById('questionNum').textContent  = 'QUESTION ' + (i+1) + ' OF ' + questions.length;
+    document.getElementById('cuteTag').textContent      = q.tag;
+    document.getElementById('progressBar').style.width  = ((i / questions.length) * 100) + '%';
+    document.getElementById('parisStrip').style.display = q.paris ? 'block' : 'none';
+    document.getElementById('deepStrip').style.display  = q.deep  ? 'block' : 'none';
+    placeNoBtn();
+  }
+
+  function placeNoBtn() {
+    var mg  = 60;
+    var bw  = noBtn.offsetWidth  || 110;
+    var bh  = noBtn.offsetHeight || 48;
+    var maxX = window.innerWidth  - bw - mg;
+    var maxY = window.innerHeight - bh - mg;
+    var x = mg + Math.random() * Math.max(0, maxX - mg);
+    var y = mg + Math.random() * Math.max(0, maxY - mg);
+    noBtn.style.left = x + 'px';
+    noBtn.style.top  = y + 'px';
+  }
+
+  function runAway() {
+    if (isMoving) return;
+    noMoveCount++;
+    isMoving = true;
+    placeNoBtn();
+    var newSize = Math.max(0.65, 1.02 - noMoveCount * 0.04);
+    noBtn.style.fontSize = newSize + 'rem';
+    if (noMoveCount > 6)  noBtn.textContent = 'Nope 🙈';
+    if (noMoveCount > 10) noBtn.textContent = 'Never! 😂';
+    if (noMoveCount > 14) noBtn.textContent = 'Hehe... 🤭';
+    setTimeout(function(){ isMoving = false; }, 280);
+  }
+
+  noBtn.addEventListener('mouseover',  function(){ if(!isMoving) runAway(); });
+  noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); runAway(); }, { passive:false });
+
+  function handleYes() {
+    createSparkles();
+    current++;
+    if (current >= questions.length) {
+      showEnding();
+    } else {
+      var card = document.getElementById('mainCard');
+      card.style.animation = 'none';
+      void card.offsetWidth;
+      card.style.animation = 'cardPop 0.42s cubic-bezier(.34,1.56,.64,1)';
+      showQuestion(current);
+      noMoveCount = 0;
+      noBtn.textContent    = 'No 🙈';
+      noBtn.style.fontSize = '1.02rem';
+    }
+  }
+
+  function createSparkles() {
+    var emojis = ['✨','💖','🌸','💕','⭐','🌟','💫','🌹','🗼','💋'];
+    for (var i = 0; i < 9; i++) {
+      (function(idx){
+        setTimeout(function(){
+          var s = document.createElement('div');
+          s.className   = 'sparkle';
+          s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          s.style.left  = (10 + Math.random() * 80) + 'vw';
+          s.style.top   = (10 + Math.random() * 75) + 'vh';
+          document.body.appendChild(s);
+          setTimeout(function(){ s.remove(); }, 950);
+        }, idx * 65);
+      })(i);
+    }
+  }
+
+  function showEnding() {
+    document.getElementById('progressBar').style.width = '100%';
+    noBtn.style.display = 'none';
+    document.getElementById('mainCard').innerHTML =
+      '<div class="ending-card">' +
+        '<span class="ending-emoji">🥰</span>' +
+        '<div class="ending-title">You said Yes to everything... 💕</div>' +
+        '<div class="ending-msg">' +
+          'Just like I knew you would, because you\'re<br>' +
+          '<strong>my everything</strong> wrapped in one beautiful soul. 🌸<br><br>' +
+          'Paris is waiting for us. 🗼🥂<br>' +
+          'Your heartbeat is my favourite sound. 💓<br>' +
+          'No words, no space between us —<br>' +
+          'just that deep, breathless connection. 💋🌌<br><br>' +
+          'Let\'s get lost in each other, forever. 💞<br>' +
+          'I love you more than any question I could ever ask. 💌' +
+        '</div>' +
+        '<button class="restart-btn" onclick="location.reload()">Ask again? 🔁💕</button>' +
+      '</div>';
+    for (var i = 0; i < 25; i++) {
+      (function(idx){ setTimeout(createSparkles, idx * 120); })(i);
+    }
+  }
+
+  function createFloatingHearts() {
+    var bg     = document.getElementById('heartsBg');
+    var emojis = ['🌸','💕','✨','🌷','💖','🦋','🌹','🗼','💌','⭐','💋','🌌'];
+    for (var i = 0; i < 24; i++) {
+      var h = document.createElement('div');
+      h.className           = 'floating-heart';
+      h.textContent         = emojis[Math.floor(Math.random() * emojis.length)];
+      h.style.left              = Math.random() * 100 + 'vw';
+      h.style.animationDuration = (7 + Math.random() * 9) + 's';
+      h.style.animationDelay    = Math.random() * 10 + 's';
+      h.style.fontSize          = (13 + Math.random() * 15) + 'px';
+      bg.appendChild(h);
+    }
+  }
+
+  createFloatingHearts();
+  showQuestion(0);
+  setTimeout(placeNoBtn, 200);
+  window.addEventListener('resize', placeNoBtn);
+</script>
+</body>
+</html>
